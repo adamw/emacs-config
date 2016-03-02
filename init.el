@@ -12,6 +12,7 @@
 (load "comint-config.el")
 (load "js2-config.el")
 (load "flycheck-config.el")
+(load "json-config.el")
 
 (load "movelines.el")
 (load "rename-file-buffer.el")

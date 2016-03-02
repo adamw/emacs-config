@@ -1,3 +1,10 @@
+;; http://www.rabbitonweb.com/2016/01/31/my-emacs-for-scala-development-part-1/
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade.ferrier.me.uk/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+(package-initialize)
+
 (setq
  inhibit-startup-screen t
  create-lockfiles nil
@@ -16,11 +23,12 @@
 ;; buffer local variables
 (setq-default
  indent-tabs-mode nil
- tab-width 4
+ tab-width 2
  c-basic-offset 4)
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
+(scroll-bar-mode 0)
 (fset `yes-or-no-p `y-or-n-p)
 
 ;; fn+arrows jump to start/end of line, not start/end of buffer
@@ -33,12 +41,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; http://www.rabbitonweb.com/2016/01/31/my-emacs-for-scala-development-part-1/
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade.ferrier.me.uk/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(package-initialize)
+;; http://ergoemacs.org/emacs/emacs_buffer_switching.html
+(ido-mode)
 
 (defun package-install-all (package-list)
   ;; fetch the list of packages available 
