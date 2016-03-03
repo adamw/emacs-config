@@ -42,7 +42,7 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; http://ergoemacs.org/emacs/emacs_buffer_switching.html
-(ido-mode)
+(ido-mode t)
 
 (defun package-install-all (package-list)
   ;; fetch the list of packages available 

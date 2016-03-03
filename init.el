@@ -1,18 +1,18 @@
-(add-to-list 'load-path "~/.emacs.d/config")
-(add-to-list 'load-path "~/.emacs.d/custom")
+(add-to-list 'load-path "~/.emacs.d/config/")
+(add-to-list 'load-path "~/.emacs.d/custom/")
 
-(load "common.el")
+(load "common")
 
 (package-install-all '(js2-mode ensime monokai-theme smex flycheck json-mode web-mode auto-complete))
 
 (load-theme 'monokai t)
 
-(load "smex-config.el")
-(load "auto-complete-config.el")
-(load "comint-config.el")
-(load "js2-config.el")
-(load "flycheck-config.el")
-(load "json-config.el")
+(load "smex-config")
+(load "auto-complete-cfg")
+(load "comint-config")
+(load "js2-config")
+(load "flycheck-config")
+(load "json-config")
 
-(load "movelines.el")
-(load "rename-file-buffer.el")
+(load "movelines")
+(load "rename-file-buffer")
