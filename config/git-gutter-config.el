@@ -9,7 +9,8 @@
  '(git-gutter:added-sign "+ ")
  '(git-gutter:modified-sign "~ ") 
  '(git-gutter:deleted-sign "- ")
- '(git-gutter:lighter " GG"))
+ '(git-gutter:lighter " GG")
+ '(git-gutter:update-interval 2))
 
 (set-face-foreground 'git-gutter:added "green")
 (set-face-background 'git-gutter:added nil)
