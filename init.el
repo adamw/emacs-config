@@ -3,7 +3,7 @@
 
 (load "common")
 
-(package-install-all '(js2-mode ensime monokai-theme smex flycheck json-mode web-mode auto-complete))
+(package-install-all '(js2-mode ensime monokai-theme smex flycheck json-mode web-mode auto-complete git-gutter magit))
 
 (load-theme 'monokai t)
 
@@ -13,6 +13,8 @@
 (load "js2-config")
 (load "flycheck-config")
 (load "json-config")
+(load "git-gutter-config")
+(load "magit-config")
 
 (load "movelines")
 (load "rename-file-buffer")
