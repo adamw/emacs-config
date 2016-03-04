@@ -13,7 +13,7 @@
 (load "js2-config")
 (load "flycheck-config")
 (load "json-config")
-(load "git-gutter-config")
+(load "diff-hl-config")
 (load "magit-config")
 
 (load "movelines")
