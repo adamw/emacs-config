@@ -41,9 +41,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; http://ergoemacs.org/emacs/emacs_buffer_switching.html
-(ido-mode t)
-
 ;; from Prelude (https://github.com/bbatsov/prelude)
 
 ;; revert buffers automatically when underlying files are changed externally
