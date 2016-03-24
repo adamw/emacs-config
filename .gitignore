@@ -3,3 +3,5 @@ smex-items
 auto-save-list
 ac-comphist.dat
 elpa
+.emacs.desktop*
+.last-package-update-day

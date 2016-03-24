@@ -1,3 +1,5 @@
+(packages-conditional-install '(flycheck))
+
 (require 'flycheck)
 
 (global-flycheck-mode t)
