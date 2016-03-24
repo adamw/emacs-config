@@ -5,8 +5,3 @@
 
 (require 'ido-ubiquitous)
 (ido-ubiquitous-mode 1)
-
-;; http://emacsblog.org/2008/05/19/giving-ido-mode-a-second-chance/
-(add-hook 'ido-setup-hook 
-          (lambda () 
-            (define-key ido-completion-map [tab] 'ido-complete)))
