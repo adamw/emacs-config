@@ -1,4 +1,4 @@
-(packages-conditional-install '(ido-ubiquitous smex auto-complete))
+(packages-conditional-install '(ido-ubiquitous smex auto-complete which-key))
 
 ;; http://ergoemacs.org/emacs/emacs_buffer_switching.html
 (ido-mode t)
@@ -31,4 +31,7 @@
             (target (concat el "/js2-mode")))
         (if (not (file-exists-p target))
             (make-symbolic-link source target)))))
+
+(require 'which-key)
+(which-key-mode)
 
