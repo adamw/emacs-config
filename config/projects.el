@@ -5,12 +5,29 @@
 (projectile-global-mode)
 
 (require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
 
-(setq neo-smart-open t)
-;;(setq projectile-switch-project-action 'neotree-projectile-action)
+;; modified version of https://github.com/hemmvm/dotemacs/blob/master/site-lisp/util--neotree.el
+(defun neotree-project-tree-open ()
+  (interactive)
+  (let ((project-dir (projectile-project-root))
+        (file-name (buffer-file-name)))
+    (if project-dir
+        (progn
+          (neotree-dir project-dir)
+          (neotree-find file-name))
+      (neotree-find)))
+  (neo-global--select-window))
+
+(defun neotree-project-tree-toggle ()
+  (interactive)
+  (if (neo-global--window-exists-p)
+      (neotree-hide)
+    (neotree-project-tree-open)))
+
+(global-set-key [f8] 'neotree-project-tree-toggle)
 
 (setq neo-theme 'arrow)
+(setq neo-window-width 35)
 
 ;; https://github.com/jaypei/emacs-neotree/issues/77 + https://github.com/hemmvm/dotemacs/blob/master/site-lisp/util--neotree.el
 (defun custom-neotree-enter-hide ()
