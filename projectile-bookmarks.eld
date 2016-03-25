@@ -1,1 +1,0 @@
-("~/.emacs.d/" "~/projects/verizon/WebServices-UserRights/")
