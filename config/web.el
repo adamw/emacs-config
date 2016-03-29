@@ -1,4 +1,4 @@
-(packages-conditional-install '(js2-mode web-mode json-mode))
+(packages-conditional-install '(js2-mode web-mode json-mode purescript-mode))
 
 (require 'js2-mode)
 
@@ -22,3 +22,6 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+(require 'purescript-mode)
+
+(add-hook 'purescript-mode-hook 'turn-on-purescript-simple-indent)

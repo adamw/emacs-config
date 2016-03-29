@@ -1,4 +1,4 @@
-(packages-conditional-install '(flycheck))
+(packages-conditional-install '(flycheck flycheck-purescript))
 
 (require 'flycheck)
 
@@ -9,3 +9,6 @@
 (setq-default flycheck-check-syntax-automatically '(idle-change))
 (setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
 
+(require 'flycheck-purescript)
+
+(eval-after-load 'flycheck '(flycheck-purescript-setup))
