@@ -11,6 +11,11 @@
 
 (global-linum-mode t) ; http://superuser.com/questions/212193/how-do-i-display-line-numbers-in-emacs-not-in-the-mode-line
 
+(packages-conditional-install '(linum-off))
+(require 'linum-off)
+
+(add-to-list 'linum-disabled-modes-list 'ansi-term)
+
 (show-paren-mode 1)
 
 ;; buffer local variables
