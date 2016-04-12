@@ -35,7 +35,9 @@
 (defun custom-neotree-enter-hide ()
   (interactive)
   (neotree-enter)
-  (neotree-hide)
+  (let ((current (neo-buffer--get-filename-current-line)))
+    (if (not (and current (file-accessible-directory-p current)))
+        (neotree-hide)))
   )
 
 (defun custom-neotree-peek ()
