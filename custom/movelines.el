@@ -6,7 +6,7 @@
   (transpose-lines 1)
   (previous-line 2))
 
-(global-set-key [(meta up)] 'move-line-up)
+(global-set-key [(shift meta up)] 'move-line-up)
 
 ;; move line down
 (defun move-line-down ()
@@ -15,4 +15,4 @@
   (transpose-lines 1)
   (previous-line 1))
 
-(global-set-key [(meta down)] 'move-line-down)
+(global-set-key [(shift meta down)] 'move-line-down)

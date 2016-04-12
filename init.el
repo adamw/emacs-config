@@ -4,6 +4,7 @@
 (load "packages")
 (load "ui")
 (load "varia")
+(load "editor")
 (load "completion")
 (load "coding")
 (load "git")
