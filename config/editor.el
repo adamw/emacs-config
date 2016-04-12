@@ -20,3 +20,10 @@
 (packages-conditional-install '(expand-region))
 (require 'expand-region)
 (global-set-key [(meta up)] 'er/expand-region)
+
+;; modify C-k to kill whole line
+(setq kill-whole-line t)
+(global-set-key [(control k)] 'kill-whole-line)
+
+;; duplicate line: http://stackoverflow.com/questions/88399/how-do-i-duplicate-a-whole-line-in-emacs
+(global-set-key "\C-c\C-d" "\C-a\C- \C-n\M-w\C-y\C-p")
