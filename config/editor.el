@@ -27,3 +27,6 @@
 
 ;; duplicate line: http://stackoverflow.com/questions/88399/how-do-i-duplicate-a-whole-line-in-emacs
 (global-set-key "\C-c\C-d" "\C-a\C- \C-n\M-w\C-y\C-p")
+
+;; overwrite when region selected: https://www.gnu.org/software/emacs/manual/html_node/efaq/Replacing-highlighted-text.html
+(delete-selection-mode 1)
