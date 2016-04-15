@@ -30,3 +30,7 @@
 
 ;; overwrite when region selected: https://www.gnu.org/software/emacs/manual/html_node/efaq/Replacing-highlighted-text.html
 (delete-selection-mode 1)
+
+;; https://github.com/victorhge/iedit
+(packages-conditional-install '(iedit))
+(require 'iedit)
