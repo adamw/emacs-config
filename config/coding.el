@@ -12,3 +12,5 @@
 (require 'flycheck-purescript)
 
 (eval-after-load 'flycheck '(flycheck-purescript-setup))
+
+(setq flycheck-purescript-ignore-error-codes '("ImplicitImport" "MissingTypeDeclaration"))
