@@ -12,13 +12,3 @@
     '(define-key json-mode-map [(tab)] 'json-reformat-region)))
 
 (use-package web-mode)
-
-(use-package markdown-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-
-(use-package purescript-mode
-  :config
-  (add-to-list 'auto-mode-alist (cons "\\.purs\\'" 'purescript-mode))
-  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
