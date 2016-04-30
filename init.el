@@ -6,7 +6,7 @@
 (load "init-varia")
 (load "init-editor")
 (load "init-ido")
-(load "init-autocomplete")
+(load "init-company")
 (load "init-flycheck")
 (load "init-git")
 (load "init-js")

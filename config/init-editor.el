@@ -1,5 +1,10 @@
 (global-linum-mode t) ; http://superuser.com/questions/212193/how-do-i-display-line-numbers-in-emacs-not-in-the-mode-line
 
+;; Highlight the line number of the current line.
+(use-package hlinum
+  :config
+  (hlinum-activate))
+
 ; turn linum off in some buffers, e.g. term
 (use-package linum-off)
 
@@ -47,3 +52,10 @@
 
 (global-set-key [next] 'scroll-up-half)
 (global-set-key [prior] 'scroll-down-half)
+
+;; Always indent after a newline.
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
+;; Automatically insert matching braces and do other clever
+;; things pertaining to braces and such.
+(electric-pair-mode 1)

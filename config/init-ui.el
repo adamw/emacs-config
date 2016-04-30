@@ -9,3 +9,6 @@
 (desktop-save-mode 1)
 
 (toggle-frame-maximized)
+
+;; Don't defer screen updates when performing operations.
+(setq redisplay-dont-pause t)
