@@ -2,8 +2,9 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 
-(package-conditional-install 'monokai-theme)
-(load-theme 'monokai t)
+(use-package monokai-theme
+  :config
+  (load-theme 'monokai t))
 
 (desktop-save-mode 1)
 

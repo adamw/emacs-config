@@ -1,7 +1,7 @@
 (global-linum-mode t) ; http://superuser.com/questions/212193/how-do-i-display-line-numbers-in-emacs-not-in-the-mode-line
 
-(packages-conditional-install '(linum-off))
-(require 'linum-off)
+; turn linum off in some buffers, e.g. term
+(use-package linum-off)
 
 (add-to-list 'linum-disabled-modes-list 'ansi-term)
 
@@ -17,10 +17,9 @@
 (define-key global-map [home] 'beginning-of-line)
 (define-key global-map [end] 'end-of-line)
 
-(packages-conditional-install '(expand-region))
-(require 'expand-region)
-(global-set-key [(meta up)] 'er/expand-region)
-
+(use-package expand-region
+  :bind ("M-<up>" . er/expand-region))
+  
 ;; modify C-k to kill whole line
 (setq kill-whole-line t)
 (global-set-key [(control k)] 'kill-whole-line)
@@ -31,9 +30,8 @@
 ;; overwrite when region selected: https://www.gnu.org/software/emacs/manual/html_node/efaq/Replacing-highlighted-text.html
 (delete-selection-mode 1)
 
-;; https://github.com/victorhge/iedit
-(packages-conditional-install '(iedit))
-(require 'iedit)
+;; https://github.com/victorhge/iedit - simultaneously edit same word occurences
+(use-package iedit)
 
 ;; half-scroll https://www.emacswiki.org/emacs/HalfScrolling
 (defun window-half-height ()

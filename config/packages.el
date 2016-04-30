@@ -8,17 +8,12 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defun package-conditional-install (package-name)
-  "Install a package if it is not present"
-  (unless (package-installed-p package-name)
-    (package-refresh-contents) (package-install package-name)))
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))
 
-(defun packages-conditional-install (packages)
-  "Install list of packages if not present"
-  (when packages
-    (package-conditional-install (car packages))
-    (packages-conditional-install (cdr packages))))
+(require 'use-package)
+(setq use-package-always-ensure t)
 
-(package-conditional-install 'auto-package-update)
-
-(auto-package-update-maybe)
+(use-package auto-package-update
+  :init
+  (auto-package-update-maybe))
