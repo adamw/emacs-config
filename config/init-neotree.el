@@ -1,9 +1,3 @@
-(use-package projectile
-  :config
-  (projectile-global-mode)
-  (add-to-list 'projectile-globally-ignored-directories "node_modules")
-  (add-to-list 'projectile-globally-ignored-directories "bower_components"))
-
 (use-package neotree
   :config
   ;; modified version of https://github.com/hemmvm/dotemacs/blob/master/site-lisp/util--neotree.el

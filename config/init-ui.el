@@ -9,4 +9,3 @@
 (desktop-save-mode 1)
 
 (toggle-frame-maximized)
-
