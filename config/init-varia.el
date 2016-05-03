@@ -34,3 +34,10 @@
   :config
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
+
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;; workaround for "ls does not support --dired" http://stackoverflow.com/questions/25125200/emacs-error-ls-does-not-support-dired
+(setq dired-use-ls-dired nil)
