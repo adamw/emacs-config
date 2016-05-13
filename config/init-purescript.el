@@ -33,7 +33,6 @@
   (define-key psc-ide-mode-map (kbd "C-c C-c") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-i") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-t") nil) ;; remove mapping
-  (define-key psc-ide-mode-map (kbd "C-<SPC>") nil) ;; remove mapping
   ;; bind to a new keymap
   (define-prefix-command 'psc-ide-extra-map)
   (define-key psc-ide-mode-map (kbd "C-c i") 'psc-ide-extra-map)
@@ -46,4 +45,97 @@
   (define-key psc-ide-extra-map (kbd "c") 'psc-ide-case-split)
   (define-key psc-ide-extra-map (kbd "i") 'psc-ide-add-import)
   (define-key psc-ide-extra-map (kbd "t") 'psc-ide-show-type)
+  (define-key psc-ide-extra-map (kbd "b") 'psc-ide-rebuild)
   (add-hook 'purescript-mode-hook 'psc-ide-mode))
+
+;; Copied from https://github.com/bodil/ohai-emacs
+;; Extend Flycheck with psc-ide capabilities.
+(with-eval-after-load "flycheck"
+  (flycheck-define-generic-checker 'psc-ide
+   "Check buffer using psc-ide rebuild."
+   :start (lambda (checker done)
+            (funcall done 'finished (ohai-purescript/rebuild-to-flycheck)))
+   :modes 'purescript-mode)
+  (add-to-list 'flycheck-checkers 'psc-ide)
+  
+  (defun ohai-purescript/rebuild-to-flycheck ()
+    "Rebuild the current module."
+    (let* ((res (json-read-from-string
+                 (psc-ide-send (psc-ide-command-rebuild))))
+           (is-success (string= "success" (cdr (assoc 'resultType res))))
+           (result (cdr (assoc 'result res))))
+      (ohai-purescript/save-suggestions (append result nil))
+      (-filter (lambda (i) (not (eq i nil)))
+               (if (not is-success)
+                   (-map (lambda (err)
+                           (ohai-purescript/error 'error err))
+                         result)
+                 (if (> (length result) 0)
+                     (-map (lambda (err)
+                             (ohai-purescript/error 'warning err))
+                           result)
+                   nil)))))
+
+  (defun ohai-purescript/save-suggestions (errs)
+    (setq-local
+     ohai-purescript/suggestions
+     (-map
+      (lambda (err)
+        (let* ((err-filename (cdr (assoc 'filename err)))
+               (err-position (cdr (assoc 'position err)))
+               (err-line (cdr (assoc 'startLine err-position)))
+               (err-column (cdr (assoc 'startColumn err-position)))
+               (err-id (concat err-filename ":" (number-to-string err-line)
+                               ":" (number-to-string err-column))))
+          (cons err-id err)))
+      (-filter (lambda (i) (and (cdr (assoc 'position i))
+                                (cdr (assoc 'suggestion i))))
+               errs))))
+
+  (defun ohai-purescript/error (severity err)
+    (when (cdr (assoc 'position err))
+      (let* ((err-message (cdr (assoc 'message err)))
+             (err-filename (cdr (assoc 'filename err)))
+             (err-position (cdr (assoc 'position err)))
+             (err-line (cdr (assoc 'startLine err-position)))
+             (err-column (cdr (assoc 'startColumn err-position))))
+        (flycheck-error-new-at
+         err-line
+         err-column
+         severity
+         err-message
+         :id (concat err-filename ":" (number-to-string err-line)
+                     ":" (number-to-string err-column))))))
+
+  (defun ohai-purescript/insert-suggestion ()
+    (interactive)
+    (let* ((id (flycheck-error-id (car (flycheck-overlay-errors-at (point)))))
+           (err (cdr (assoc id ohai-purescript/suggestions)))
+           (pos (cdr (assoc 'position err)))
+           (sugg (cdr (assoc 'suggestion err))))
+      (if (and pos sugg)
+          (let* ((start (save-excursion
+                          (goto-char (point-min))
+                          (forward-line (- (cdr (assoc 'startLine pos)) 1))
+                          (move-to-column (- (cdr (assoc 'startColumn pos)) 1))
+                          (point)))
+                 (end (save-excursion
+                        (goto-char (point-min))
+                        (forward-line (- (cdr (assoc 'endLine pos)) 1))
+                        (move-to-column (- (cdr (assoc 'endColumn pos)) 1))
+                        (point))))
+            (progn
+              (kill-region start end)
+              (goto-char start)
+              (let ((new-end
+                     (save-excursion
+                       (insert (cdr (assoc 'replacement sugg)))
+                       (point))))
+                (set-mark start)
+                (goto-char new-end)
+                (setq deactivate-mark nil))))
+        (message "No suggestion available!"))))
+
+  (define-key purescript-mode-map (kbd "C-c M-s")
+    'ohai-purescript/insert-suggestion))
+
