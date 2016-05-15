@@ -51,12 +51,22 @@
 ;; Copied from https://github.com/bodil/ohai-emacs
 ;; Extend Flycheck with psc-ide capabilities.
 (with-eval-after-load "flycheck"
-  (flycheck-define-generic-checker 'psc-ide
+  (flycheck-def-option-var flycheck-psc-ide-ignore-error-codes nil psc
+    "List of psc error codes to ignore.
+
+The value of this variable is a list of strings, where each
+string is a name of an error code to ignore (e.g. \"MissingTypeDeclaration\")."
+    :type '(repeat :tag "Extensions" (string :tag "Extension"))
+    :safe #'flycheck-string-list-p)
+
+  (setq flycheck-psc-ide-ignore-error-codes '("ImplicitImport" "MissingTypeDeclaration"))
+  
+  (flycheck-define-generic-checker 'flycheck-psc-ide
    "Check buffer using psc-ide rebuild."
    :start (lambda (checker done)
             (funcall done 'finished (ohai-purescript/rebuild-to-flycheck)))
    :modes 'purescript-mode)
-  (add-to-list 'flycheck-checkers 'psc-ide)
+  (add-to-list 'flycheck-checkers 'flycheck-psc-ide)
   
   (defun ohai-purescript/rebuild-to-flycheck ()
     "Rebuild the current module."
@@ -93,17 +103,18 @@
                errs))))
 
   (defun ohai-purescript/error (severity err)
-    (when (cdr (assoc 'position err))
-      (let* ((err-message (cdr (assoc 'message err)))
-             (err-filename (cdr (assoc 'filename err)))
-             (err-position (cdr (assoc 'position err)))
-             (err-line (cdr (assoc 'startLine err-position)))
-             (err-column (cdr (assoc 'startColumn err-position))))
+    (let* ((err-message (cdr (assoc 'message err)))
+           (err-filename (cdr (assoc 'filename err)))
+           (err-position (cdr (assoc 'position err)))
+           (err-code (cdr (assoc 'errorCode err)))
+           (err-line (cdr (assoc 'startLine err-position)))
+           (err-column (cdr (assoc 'startColumn err-position))))
+      (when (and err-position (not (member err-code flycheck-psc-ide-ignore-error-codes)))
         (flycheck-error-new-at
          err-line
          err-column
          severity
-         err-message
+         (concat err-code ":" err-message)
          :id (concat err-filename ":" (number-to-string err-line)
                      ":" (number-to-string err-column))))))
 
