@@ -9,6 +9,7 @@
   (setq psc-ide-client-executable "psc-ide-client")
   (setq psc-ide-server-executable "psc-ide-server")
   :config
+  
   (defvar psc-ide-current nil)
 
   (defun psc-ide-ensure ()
@@ -18,7 +19,6 @@
           (message "No project or already running for current project")
         (progn
           (setq psc-ide-current prj)
-          (psc-ide-server-quit)
           (psc-ide-server-start-impl (expand-file-name prj))
           (sit-for 1) ;; waiting for the server to start to send it commands
           (psc-ide-load-all)
@@ -33,6 +33,7 @@
   (define-key psc-ide-mode-map (kbd "C-c C-c") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-i") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-t") nil) ;; remove mapping
+  (define-key psc-ide-mode-map (kbd "C-c C-b") nil) ;; remove mapping
   ;; bind to a new keymap
   (define-prefix-command 'psc-ide-extra-map)
   (define-key psc-ide-mode-map (kbd "C-c i") 'psc-ide-extra-map)
@@ -46,7 +47,11 @@
   (define-key psc-ide-extra-map (kbd "i") 'psc-ide-add-import)
   (define-key psc-ide-extra-map (kbd "t") 'psc-ide-show-type)
   (define-key psc-ide-extra-map (kbd "b") 'psc-ide-rebuild)
-  (add-hook 'purescript-mode-hook 'psc-ide-mode))
+
+  (add-hook 'purescript-mode-hook
+    (lambda ()
+      (psc-ide-mode)
+      (company-mode))))
 
 ;; Copied from https://github.com/bodil/ohai-emacs
 ;; Extend Flycheck with psc-ide capabilities.
@@ -71,7 +76,7 @@ string is a name of an error code to ignore (e.g. \"MissingTypeDeclaration\")."
   (defun ohai-purescript/rebuild-to-flycheck ()
     "Rebuild the current module."
     (let* ((res (json-read-from-string
-                 (psc-ide-send (psc-ide-command-rebuild))))
+                 (psc-ide-send-sync (psc-ide-command-rebuild))))
            (is-success (string= "success" (cdr (assoc 'resultType res))))
            (result (cdr (assoc 'result res))))
       (ohai-purescript/save-suggestions (append result nil))
