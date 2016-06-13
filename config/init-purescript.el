@@ -47,111 +47,27 @@
   (define-key psc-ide-extra-map (kbd "i") 'psc-ide-add-import)
   (define-key psc-ide-extra-map (kbd "t") 'psc-ide-show-type)
   (define-key psc-ide-extra-map (kbd "b") 'psc-ide-rebuild)
+  (define-key psc-ide-extra-map (kbd "g") 'psc-ide-flycheck-insert-suggestion)
 
+  (setq psc-ide-flycheck-ignored-error-codes
+        '("ImplicitImport" "MissingTypeDeclaration"))
+  
   (add-hook 'purescript-mode-hook
     (lambda ()
       (psc-ide-mode)
-      (company-mode))))
+      (company-mode)))
 
-;; Copied from https://github.com/bodil/ohai-emacs
-;; Extend Flycheck with psc-ide capabilities.
-(with-eval-after-load "flycheck"
-  (flycheck-def-option-var flycheck-psc-ide-ignore-error-codes nil psc
-    "List of psc error codes to ignore.
-
-The value of this variable is a list of strings, where each
-string is a name of an error code to ignore (e.g. \"MissingTypeDeclaration\")."
-    :type '(repeat :tag "Extensions" (string :tag "Extension"))
-    :safe #'flycheck-string-list-p)
-
-  (setq flycheck-psc-ide-ignore-error-codes '("ImplicitImport" "MissingTypeDeclaration"))
+  ;; as a work-around for https://github.com/epost/psc-ide-emacs/issues/50, saving the file
+  ;; always before a check
+  (defun save-if-modified ()
+    (when (and buffer-file-name
+               (buffer-modified-p (current-buffer))
+               (file-writable-p buffer-file-name))
+      (save-buffer)))
   
-  (flycheck-define-generic-checker 'flycheck-psc-ide
-   "Check buffer using psc-ide rebuild."
-   :start (lambda (checker done)
-            (funcall done 'finished (ohai-purescript/rebuild-to-flycheck)))
-   :modes 'purescript-mode)
-  (add-to-list 'flycheck-checkers 'flycheck-psc-ide)
+  (defun flycheck-purescript-autosave-hook ()
+    "Add the current dir to the clang checker include list"
+    (if (derived-mode-p 'purescript-mode)
+        (save-if-modified)))
   
-  (defun ohai-purescript/rebuild-to-flycheck ()
-    "Rebuild the current module."
-    (let* ((res (json-read-from-string
-                 (psc-ide-send-sync (psc-ide-command-rebuild))))
-           (is-success (string= "success" (cdr (assoc 'resultType res))))
-           (result (cdr (assoc 'result res))))
-      (ohai-purescript/save-suggestions (append result nil))
-      (-filter (lambda (i) (not (eq i nil)))
-               (if (not is-success)
-                   (-map (lambda (err)
-                           (ohai-purescript/error 'error err))
-                         result)
-                 (if (> (length result) 0)
-                     (-map (lambda (err)
-                             (ohai-purescript/error 'warning err))
-                           result)
-                   nil)))))
-
-  (defun ohai-purescript/save-suggestions (errs)
-    (setq-local
-     ohai-purescript/suggestions
-     (-map
-      (lambda (err)
-        (let* ((err-filename (cdr (assoc 'filename err)))
-               (err-position (cdr (assoc 'position err)))
-               (err-line (cdr (assoc 'startLine err-position)))
-               (err-column (cdr (assoc 'startColumn err-position)))
-               (err-id (concat err-filename ":" (number-to-string err-line)
-                               ":" (number-to-string err-column))))
-          (cons err-id err)))
-      (-filter (lambda (i) (and (cdr (assoc 'position i))
-                                (cdr (assoc 'suggestion i))))
-               errs))))
-
-  (defun ohai-purescript/error (severity err)
-    (let* ((err-message (cdr (assoc 'message err)))
-           (err-filename (cdr (assoc 'filename err)))
-           (err-position (cdr (assoc 'position err)))
-           (err-code (cdr (assoc 'errorCode err)))
-           (err-line (cdr (assoc 'startLine err-position)))
-           (err-column (cdr (assoc 'startColumn err-position))))
-      (when (and err-position (not (member err-code flycheck-psc-ide-ignore-error-codes)))
-        (flycheck-error-new-at
-         err-line
-         err-column
-         severity
-         (concat err-code ":" err-message)
-         :id (concat err-filename ":" (number-to-string err-line)
-                     ":" (number-to-string err-column))))))
-
-  (defun ohai-purescript/insert-suggestion ()
-    (interactive)
-    (let* ((id (flycheck-error-id (car (flycheck-overlay-errors-at (point)))))
-           (err (cdr (assoc id ohai-purescript/suggestions)))
-           (pos (cdr (assoc 'position err)))
-           (sugg (cdr (assoc 'suggestion err))))
-      (if (and pos sugg)
-          (let* ((start (save-excursion
-                          (goto-char (point-min))
-                          (forward-line (- (cdr (assoc 'startLine pos)) 1))
-                          (move-to-column (- (cdr (assoc 'startColumn pos)) 1))
-                          (point)))
-                 (end (save-excursion
-                        (goto-char (point-min))
-                        (forward-line (- (cdr (assoc 'endLine pos)) 1))
-                        (move-to-column (- (cdr (assoc 'endColumn pos)) 1))
-                        (point))))
-            (progn
-              (kill-region start end)
-              (goto-char start)
-              (let ((new-end
-                     (save-excursion
-                       (insert (cdr (assoc 'replacement sugg)))
-                       (point))))
-                (set-mark start)
-                (goto-char new-end)
-                (setq deactivate-mark nil))))
-        (message "No suggestion available!"))))
-
-  (define-key purescript-mode-map (kbd "C-c M-s")
-    'ohai-purescript/insert-suggestion))
-
+  (add-hook 'flycheck-before-syntax-check-hook 'flycheck-purescript-autosave-hook))
