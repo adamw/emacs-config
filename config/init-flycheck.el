@@ -11,5 +11,5 @@
   :config
   (eval-after-load "flycheck"
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-  (set-face-foreground 'flycheck-color-mode-line-error-face "#870000")
+  (set-face-background 'flycheck-color-mode-line-error-face "#870000")
   (set-face-background 'flycheck-color-mode-line-warning-face "#707070"))
