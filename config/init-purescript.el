@@ -2,7 +2,11 @@
   :commands purescript-mode
   :mode (("\\.purs$" . purescript-mode))
   :config
-  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
+  (add-hook 'purescript-mode-hook (lambda ()
+    (psc-ide-mode)
+    (company-mode)
+    (flycheck-mode)
+    (turn-on-purescript-indentation))))
 
 (use-package psc-ide
   :init
@@ -34,6 +38,7 @@
   (define-key psc-ide-mode-map (kbd "C-c C-i") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-t") nil) ;; remove mapping
   (define-key psc-ide-mode-map (kbd "C-c C-b") nil) ;; remove mapping
+  (define-key psc-ide-mode-map (kbd "C-c M-s") nil) ;; remove mapping
   ;; bind to a new keymap
   (define-prefix-command 'psc-ide-extra-map)
   (define-key psc-ide-mode-map (kbd "C-c i") 'psc-ide-extra-map)
@@ -51,11 +56,6 @@
 
   (setq psc-ide-flycheck-ignored-error-codes
         '("ImplicitImport" "MissingTypeDeclaration"))
-  
-  (add-hook 'purescript-mode-hook
-    (lambda ()
-      (psc-ide-mode)
-      (company-mode)))
 
   ;; as a work-around for https://github.com/epost/psc-ide-emacs/issues/50, saving the file
   ;; always before a check

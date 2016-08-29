@@ -59,3 +59,6 @@
 ;; Automatically insert matching braces and do other clever
 ;; things pertaining to braces and such.
 (electric-pair-mode 1)
+
+(when (eq system-type 'darwin)
+  (setq mac-right-option-modifier 'none))
