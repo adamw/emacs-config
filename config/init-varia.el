@@ -30,7 +30,7 @@
 (define-key comint-mode-map (kbd "<up>") 'comint-previous-input)
 (define-key comint-mode-map (kbd "<down>") 'comint-next-input)
 
-(use-package exec-path-from-shell
+(use-package exec-path-from-shell       
   :config
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))

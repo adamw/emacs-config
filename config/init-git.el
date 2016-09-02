@@ -5,8 +5,14 @@
 
 ;; https://github.com/dgutov/diff-hl
 (use-package diff-hl
+  :bind ("C-c k" . save-and-revert-hunk)
   :config
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (global-diff-hl-mode t)
   (diff-hl-flydiff-mode)
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
+
+(defun save-and-revert-hunk ()
+  (interactive)
+  (save-buffer)
+  (diff-hl-revert-hunk))

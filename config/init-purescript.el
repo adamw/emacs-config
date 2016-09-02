@@ -24,7 +24,7 @@
         (progn
           (setq psc-ide-current prj)
           (psc-ide-server-start-impl (expand-file-name prj))
-          (sit-for 1) ;; waiting for the server to start to send it commands
+          (sit-for 3) ;; waiting for the server to start to send it commands
           (psc-ide-load-all)
           (message (format "psc-ide started for %s" (projectile-project-name)))))))
   
@@ -55,19 +55,4 @@
   (define-key psc-ide-extra-map (kbd "g") 'psc-ide-flycheck-insert-suggestion)
 
   (setq psc-ide-flycheck-ignored-error-codes
-        '("ImplicitImport" "MissingTypeDeclaration"))
-
-  ;; as a work-around for https://github.com/epost/psc-ide-emacs/issues/50, saving the file
-  ;; always before a check
-  (defun save-if-modified ()
-    (when (and buffer-file-name
-               (buffer-modified-p (current-buffer))
-               (file-writable-p buffer-file-name))
-      (save-buffer)))
-  
-  (defun flycheck-purescript-autosave-hook ()
-    "Add the current dir to the clang checker include list"
-    (if (derived-mode-p 'purescript-mode)
-        (save-if-modified)))
-  
-  (add-hook 'flycheck-before-syntax-check-hook 'flycheck-purescript-autosave-hook))
+        '("ImplicitImport")))
