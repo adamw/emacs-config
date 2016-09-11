@@ -56,9 +56,9 @@
 ;; Always indent after a newline.
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
-;; Automatically insert matching braces and do other clever
-;; things pertaining to braces and such.
-(electric-pair-mode 1)
+(use-package smartparens
+  :config
+  (smartparens-global-mode 1))
 
 (when (eq system-type 'darwin)
   (setq mac-right-option-modifier 'none))
