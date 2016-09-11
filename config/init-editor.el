@@ -75,3 +75,7 @@
     (comment-or-uncomment-region beg end)))
 
 (global-set-key "\M-;" 'comment-or-uncomment-region-or-line)
+
+(use-package avy
+  :bind
+  (("C-'" . avy-goto-char-2)))

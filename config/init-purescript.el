@@ -14,19 +14,15 @@
   (setq psc-ide-server-executable "psc-ide-server")
   :config
   
-  (defvar psc-ide-current nil)
-
   (defun psc-ide-ensure ()
     (interactive)
     (let ((prj (projectile-project-root)))
-      (if (or (eq prj nil) (eq prj psc-ide-current))
-          (message "No project or already running for current project")
-        (progn
-          (setq psc-ide-current prj)
-          (psc-ide-server-start-impl (expand-file-name prj))
-          (sit-for 3) ;; waiting for the server to start to send it commands
-          (psc-ide-load-all)
-          (message (format "psc-ide started for %s" (projectile-project-name)))))))
+      (progn
+        (setq psc-ide-current prj)
+        (psc-ide-server-start-impl (expand-file-name prj))
+        (sit-for 3) ;; waiting for the server to start to send it commands
+        (psc-ide-load-all)
+        (message (format "psc-ide started for %s" (projectile-project-name))))))
   
   ;; remove original mappings
   (define-key psc-ide-mode-map (kbd "C-c C-s") nil) ;; remove mapping

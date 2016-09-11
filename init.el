@@ -15,6 +15,8 @@
 (load "init-projectile")
 (load "init-neotree")
 (load "init-modeline")
+(load "init-persistent-scratch")
+(load "init-ag")
 
 (load "movelines")
 (load "rename-file-buffer")
