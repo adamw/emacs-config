@@ -3,7 +3,7 @@
   ;; modified version of https://github.com/hemmvm/dotemacs/blob/master/site-lisp/util--neotree.el
   (defun neotree-project-tree-open ()
     (interactive)
-    (let ((project-dir (projectile-project-root))
+    (let ((project-dir (ignore-errors (projectile-project-root)))
           (file-name (buffer-file-name)))
       (if project-dir
           (progn

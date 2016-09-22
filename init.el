@@ -17,6 +17,7 @@
 (load "init-modeline")
 (load "init-persistent-scratch")
 (load "init-ag")
+(load "init-helm")
 
 (load "movelines")
 (load "rename-file-buffer")
