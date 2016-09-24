@@ -18,6 +18,7 @@
 (load "init-persistent-scratch")
 (load "init-ag")
 (load "init-helm")
+(load "init-web")
 
 (load "movelines")
 (load "rename-file-buffer")
