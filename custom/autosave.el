@@ -25,4 +25,4 @@ The body of the advice is in BODY."
                  (auto-save-command))
 
 (add-hook 'mouse-leave-buffer-hook 'auto-save-command)
-(add-hook 'focus-out-hook 'save-buffer)
+(add-hook 'focus-out-hook 'auto-save-command)
