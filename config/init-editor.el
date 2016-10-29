@@ -25,9 +25,10 @@
 (use-package expand-region
   :bind ("M-<up>" . er/expand-region))
   
-;; modify C-k to kill whole line
-(setq kill-whole-line t)
-(global-set-key [(control k)] 'kill-whole-line)
+;; C-w and M-w cut/copy the whole line if no region is selected
+(use-package whole-line-or-region
+  :config
+  (whole-line-or-region-mode))
 
 ;; duplicate line: http://stackoverflow.com/questions/88399/how-do-i-duplicate-a-whole-line-in-emacs
 (global-set-key "\C-c\C-d" "\C-a\C- \C-n\M-w\C-y\C-p")
