@@ -7,8 +7,10 @@
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
  package-archive-priorities '(("melpa-stable" . 1)))
 
+(package-initialize)
+
 (when (not package-archive-contents)
-  (package-refresh-cpontents))
+  (package-refresh-contents))
 
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))
