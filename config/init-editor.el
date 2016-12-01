@@ -86,6 +86,7 @@
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
 
+;; macos: fast scrolling http://superuser.com/questions/1133436/way-too-fast-scrolling-in-emacs-on-osx
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 
