@@ -10,7 +10,6 @@
 
 (use-package psc-ide
   :init
-  (setq psc-ide-client-executable "psc-ide-client")
   (setq psc-ide-server-executable "psc-ide-server")
   :config
   
