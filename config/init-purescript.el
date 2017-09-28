@@ -1,18 +1,11 @@
-(use-package purescript-mode
-  :commands purescript-mode
+(use-package psc-ide
   :mode (("\\.purs$" . purescript-mode))
   :config
   (add-hook 'purescript-mode-hook (lambda ()
     (psc-ide-mode)
     (company-mode)
     (flycheck-mode)
-    (turn-on-purescript-indentation))))
-
-(use-package psc-ide
-  :init
-  (setq psc-ide-server-executable "psc-ide-server")
-  :config
-  
+    (turn-on-purescript-indentation)))
   (defun psc-ide-ensure ()
     (interactive)
     (let ((prj (projectile-project-root)))
