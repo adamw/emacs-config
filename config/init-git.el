@@ -6,8 +6,8 @@
 ;; https://github.com/dgutov/diff-hl
 (use-package diff-hl
   :bind (("C-c k" . save-and-revert-hunk)
-         ("M-]" . diff-hl-next-hunk)
-         ("M-[" . diff-hl-previous-hunk))
+         ("M-s-<down>" . diff-hl-next-hunk)
+         ("M-s-<up>" . diff-hl-previous-hunk))
   :config
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (global-diff-hl-mode t)

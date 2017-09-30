@@ -41,3 +41,8 @@
 
 ;; workaround for "ls does not support --dired" http://stackoverflow.com/questions/25125200/emacs-error-ls-does-not-support-dired
 (setq dired-use-ls-dired nil)
+
+;; terminal setup: http://jr0cket.co.uk/2012/10/using-emacs-24-server-on-mac-osx-for.html.html
+(server-start)
+
+

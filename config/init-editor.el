@@ -86,7 +86,14 @@
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
 
+;; enable mouse in terminal (https://www.iterm2.com/faq.html)
+(require 'mwheel)
+(require 'mouse)
+(xterm-mouse-mode t)
+(mouse-wheel-mode t)
+(global-set-key [mouse-4] 'next-line)
+(global-set-key [mouse-5] 'previous-line)
+
 ;; macos: fast scrolling http://superuser.com/questions/1133436/way-too-fast-scrolling-in-emacs-on-osx
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
-
