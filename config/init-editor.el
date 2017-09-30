@@ -97,3 +97,16 @@
 ;; macos: fast scrolling http://superuser.com/questions/1133436/way-too-fast-scrolling-in-emacs-on-osx
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
+
+;; copy-paste in terminal: https://stackoverflow.com/questions/9985316/how-to-paste-to-emacs-from-clipboard-on-osx
+(defun copy-from-osx ()
+(shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+(let ((process-connection-type nil))
+(let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+(process-send-string proc text)
+(process-send-eof proc))))
+
+(setq interprogram-cut-function 'paste-to-osx)
+(setq interprogram-paste-function 'copy-from-osx)
