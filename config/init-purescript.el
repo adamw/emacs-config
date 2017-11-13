@@ -1,5 +1,7 @@
+(use-package purescript-mode
+  :mode "\\.purs$")
+  
 (use-package psc-ide
-  :mode (("\\.purs$" . purescript-mode))
   :config
   (add-hook 'purescript-mode-hook (lambda ()
     (psc-ide-mode)
