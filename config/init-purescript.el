@@ -44,5 +44,9 @@
   (define-key psc-ide-extra-map (kbd "b") 'psc-ide-rebuild)
   (define-key psc-ide-extra-map (kbd "g") 'psc-ide-flycheck-insert-suggestion)
 
+  ;; https://github.com/epost/psc-ide-emacs/issues/130
+  ;; fix goto definition in edited files
+  (setq psc-ide-editor-mode t) 
+  
   (setq psc-ide-flycheck-ignored-error-codes
         '("ImplicitImport")))
