@@ -11,12 +11,14 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))
+(when (not (package-installed-p 'paradox))
+  (package-install 'paradox))
 
+(paradox-require 'use-package)
 (require 'use-package)
+
 (setq use-package-always-ensure t)
 
 (use-package auto-package-update
-  :init
+  :config
   (auto-package-update-maybe))

@@ -5,8 +5,8 @@
 ;; You may delete these explanatory comments.
 ;(package-initialize)
 
-(setq max-lisp-eval-depth 1500
-      max-specpdl-size    3000)
+;;(setq max-lisp-eval-depth 1500
+;;      max-specpdl-size    3000)
 
 (add-to-list 'load-path "~/.emacs.d/config/")
 (add-to-list 'load-path "~/.emacs.d/custom/")
@@ -29,9 +29,8 @@
 (load "init-ag")
 (load "init-helm")
 (load "init-web")
-(load "init-scala")
+;;(load "init-scala")
 
 (load "movelines")
 (load "rename-file-buffer")
 (load "autosave")
-
