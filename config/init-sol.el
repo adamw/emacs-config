@@ -1,0 +1,1 @@
+(use-package solidity-mode)

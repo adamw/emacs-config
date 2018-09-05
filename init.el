@@ -29,6 +29,7 @@
 (load "init-ag")
 (load "init-helm")
 (load "init-web")
+(load "init-sol")
 ;;(load "init-scala")
 
 (load "movelines")
