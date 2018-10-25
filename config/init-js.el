@@ -19,3 +19,10 @@
                 web-mode-code-indent-offset 2
                 web-mode-style-padding 2
                 web-mode-script-padding 2))
+
+(use-package tide
+  :config
+  (tide-setup)
+  (tide-hl-identifier-mode +1)
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
